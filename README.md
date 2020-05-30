@@ -18,3 +18,10 @@
 ## Evaluation
 
     $ python evaluate.py --model_dir="./models"
+
+
+## Prediction
+
+    $ python predict.py \
+        --model_dir="./models" \
+        --image=<path/to/image>
