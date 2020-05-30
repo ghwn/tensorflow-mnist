@@ -1,12 +1,14 @@
 import argparse
 
 import tensorflow as tf
+import numpy as np
 
 
 def evaluate(model_dir, batch_size):
     mnist = tf.keras.datasets.mnist
     (_, _), (x_test, y_test) = mnist.load_data()
     x_test = x_test / 255.0
+    x_test = np.expand_dims(x_test, axis=-1)
 
     model = tf.keras.models.load_model(model_dir)
     loss, accuracy = model.evaluate(x_test, y_test, batch_size=batch_size)

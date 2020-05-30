@@ -34,6 +34,7 @@ def preprocess(image_bytes):
     image = image.resize(size=(28, 28))
     image = np.array(image, dtype=np.uint8)
     image = np.expand_dims(image, axis=0)
+    image = np.expand_dims(image, axis=-1)
     return image
 
 
