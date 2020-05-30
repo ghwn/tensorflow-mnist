@@ -9,7 +9,8 @@ def evaluate(model_dir):
     x_test = x_test / 255.0
 
     model = tf.keras.models.load_model(model_dir)
-    model.evaluate(x_test, y_test, verbose=2)
+    loss, accuracy = model.evaluate(x_test, y_test, verbose=0)
+    print("Test loss: %.6f, Test accuracy: %.2f%%" % (loss, accuracy))
 
 
 if __name__ == "__main__":
