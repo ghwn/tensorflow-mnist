@@ -17,7 +17,9 @@
 
 ## Evaluation
 
-    $ python evaluate.py --model_dir="./models"
+    $ python evaluate.py \
+        --model_dir="./models" \
+        --batch_size=50
 
 
 ## Prediction
