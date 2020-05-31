@@ -41,4 +41,6 @@
 
         $ python server.py \
             --model_dir="./models" \
+            --host="localhost" \
+            --port=50051 \
             --max_workers=1
