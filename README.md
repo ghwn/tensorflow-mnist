@@ -39,4 +39,6 @@
 
     To use this server, you have to also implement its client satisfying `digit_classification.proto`.
 
-        $ python server.py --model_dir="./models"
+        $ python server.py \
+            --model_dir="./models" \
+            --max_workers=1
