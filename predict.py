@@ -47,9 +47,16 @@ def predict(model_dir, image_bytes):
     return prediction
 
 
+def main(model_dir, image_path):
+    with open(image_path, 'rb') as f:
+        image_bytes = f.read()
+    prediction = predict(model_dir, image_bytes)
+    print('prediction: %s' % prediction)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_dir', type=str, required=True, help="path to MNIST model directory")
     parser.add_argument('--image', type=str, required=True, help="path to an image")
     args = parser.parse_args()
-    print('prediction: %s' % predict(args.model_dir, open(args.image, 'rb').read()))
+    main(args.model_dir, args.image)
