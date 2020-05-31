@@ -44,12 +44,12 @@ def predict(model_dir, image_bytes):
     model = tf.keras.models.load_model(model_dir)
     output = model.predict(image).squeeze()
     prediction = np.argmax(output)
-    print('prediction: %s' % prediction)
+    return prediction
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_dir', type=str, required=True, help="path to MNIST model directory")
     parser.add_argument('--image', type=str, required=True, help="path to an image")
-    args = parser.parse_args()    
-    predict(args.model_dir, open(args.image, 'rb').read())
+    args = parser.parse_args()
+    print('prediction: %s' % predict(args.model_dir, open(args.image, 'rb').read()))
