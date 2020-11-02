@@ -1,56 +1,30 @@
 import argparse
-import io
 
-from PIL import Image
+import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 import tensorflow as tf
 
 
-def create_image_object(image_bytes):
-    """Create a PIL.Image object that contains the image bytes."""
-    f = io.BytesIO()
-    f.write(image_bytes)
-    image = Image.open(f)
+def preprocess(image):
+    """Preprocesses image bytes so that they can be input into the model."""
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    image = cv2.resize(image, (28, 28), interpolation=cv2.INTER_LINEAR)
+    image = np.reshape(image, (-1, 28, 28, 1))
     return image
 
 
-def to_jpeg(image_object, mode='RGB'):
-    """Converts the given PIL.Image object's format into `JPEG`."""
-    f = io.BytesIO()
-    image_object.convert(mode).save(f, format='JPEG')
-    image = Image.open(f)
-    return image
-
-
-def preprocess(image_bytes):
-    """Preprocesses image bytes so that they can be input into the model.
-    
-    Returns:
-        - a numpy array of which shape is (1, 28, 28)
-    """
-    image = create_image_object(image_bytes)
-    image = to_jpeg(image, mode='L')    # 'L' for grayscale
-    image = image.resize(size=(28, 28))
-    image = np.array(image, dtype=np.uint8)
-    image = np.expand_dims(image, axis=0)
-    image = np.expand_dims(image, axis=-1)
-    return image
-
-
-def predict(model_dir, image_bytes):
+def predict(model_dir, image_path):
     """Predicts a digit the image represents."""
-    image = preprocess(image_bytes)
+    image = cv2.imread(image_path)
+    image = preprocess(image)
     model = tf.keras.models.load_model(model_dir)
-    output = model.predict(image).squeeze()
+    output = model.predict(image)
     prediction = np.argmax(output)
     return prediction
 
 
 def main(model_dir, image_path):
-    with open(image_path, 'rb') as f:
-        image_bytes = f.read()
-    prediction = predict(model_dir, image_bytes)
+    prediction = predict(model_dir, image_path)
     print('prediction: %s' % prediction)
 
 
